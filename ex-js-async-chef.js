@@ -5,7 +5,14 @@ async function fetchJson(url) { //funzione di supporto per evitare di dover fare
 }
 
 async function getChefbirthday(id) {
-    const recipe = await fetchJson(`https://dummyjson.com/recipes/${id}`);
+    let recipe;
+
+    try {
+        const recipe = await fetchJson(`https://dummyjson.com/recipes/${id}`);
+    } catch (error) {
+        throw new Error(`ERROR: can't catch recipe with id ${id} `)
+    }
+
     const userId = recipe.userId;
 
     const infoChef = await fetchJson(`https://dummyjson.com/users/${userId}`)
@@ -16,8 +23,7 @@ async function getChefbirthday(id) {
     try {
         const birthday = await getChefbirthday(1);
         console.log("Data di nascita dello chef:", birthday)
-    }
-    catch (error) {
+    } catch (error) {
         console.error(error);
 
     }
