@@ -16,15 +16,24 @@ async function getChefbirthday(id) {
     if (recipe.message) {
         throw new Error(recipe.message)
     }
-    const userId = recipe.userId;
 
-    const infoChef = await fetchJson(`https://dummyjson.com/users/${userId}`)
+    let infoChef
+    try {
+        infoChef = await fetchJson(`https://dummyjson.com/users/${recipe.userId}`);
+    } catch (error) {
+        throw new Error(`ERROR: can't catch Chef birthday with id ${recipe.userId} `)
+    }
+    if (infoChef.message) {
+        throw new Error(infoChef.message)
+    }
+
+
     return infoChef.birthDate
 }
 
 (async () => {
     try {
-        const birthday = await getChefbirthday(1324234342);
+        const birthday = await getChefbirthday(1);
         console.log("Data di nascita dello chef:", birthday)
     } catch (error) {
         console.error(error);
